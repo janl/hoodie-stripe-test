@@ -61,8 +61,8 @@
       switch(action) {
         case 'signup':
           $form = $.modalForm({
-            fields: [ 'username', 'password', 'password_confirmation' ],
-            submit: 'Sign Up'
+            fields: [ 'username', 'password', 'password_confirmation', 'card-number', 'card-cvc', 'card-expiry-month', 'card-expiry-year' ],
+            submit: 'Sign Up with Stripe'
           });
           break;
         case 'signin':
@@ -100,11 +100,33 @@
       }
 
       if ($form) {
-        $form.on('submit', handleSubmit( action ));
+        $form.on('submit', handleSubmit1( action ));
       }
     });
 
-    var handleSubmit = function(action) {
+    var handleSubmit1 = function(action) {
+      return function(event, inputs) {
+        if(action == 'signup') {
+
+          var card = {
+            number: $('[name=card-number]').val(),
+            // cvc: $('[name-card-cvc]').val(),
+            exp_month: $('[name=card-expiry-month]').val(),
+            exp_year: $('[name=card-expiry-year]').val()
+          };
+          console.log(card);
+          Stripe.createToken(card, function(stripeStatus, stripeRsponse) {
+            console.log(stripeStatus);
+            console.log(stripeRsponse);
+            handleSubmit(action, stripeRsponse.id)(event, inputs);
+          });
+        } else {
+          handleSubmit(action)(event, inputs);
+        }
+      }
+    };
+
+    var handleSubmit = function(action, stripeToken) {
       return function(event, inputs) {
 
         var $modal = $(event.target);
@@ -115,7 +137,7 @@
             magic = window.hoodie.account.signIn(inputs.username, inputs.password);
             break;
           case 'signup':
-            magic = window.hoodie.account.signUp(inputs.username, inputs.password);
+            magic = window.hoodie.account.signUpWith('stripe', inputs.username, inputs.password, stripeToken);
             break;
           case 'changepassword':
             magic = window.hoodie.account.changePassword(null, inputs.new_password);

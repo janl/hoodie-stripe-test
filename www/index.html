@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="assets/vendor/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="assets/vendor/prism/prism.css">
     <link rel="stylesheet" href="assets/main.css">
+
   </head>
   <body>
     <div class="container">
@@ -23,7 +24,7 @@
 
           <div class="hoodie-account-signedout">
             <span class="btn-group">
-              <button class="btn btn-small btn-inverse" data-hoodie-action="signup">Sign Up</button>
+              <button class="btn btn-small btn-inverse" data-hoodie-action="signup">Sign Up With Stripe</button>
               <button class="btn btn-small dropdown-toggle btn-inverse" data-toggle="dropdown">
                 <span class="caret"></span>
               </button>
@@ -112,7 +113,6 @@ function sortByCreatedAt(a, b) {
         <p>&hearts; hood.ie 2013</p>
       </footer>
     </div> <!-- /.container -->
-
     <script src="assets/vendor/jquery-1.9.1.js"></script>
     <script src="assets/vendor/bootstrap/bootstrap.js"></script>
     <script src="assets/vendor/prism/prism.js"></script>
@@ -122,5 +122,9 @@ function sortByCreatedAt(a, b) {
     <script src="assets/vendor/hoodie.accountbar.bootstrap.js"></script>
     <script src="assets/vendor/bootstrap.modalform.js"></script>
     <script src="assets/main.js"></script>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+      Stripe.setPublishableKey('pk_T6GOldTB2lvpav3BQFwnifZ3crAON');
+    </script>
   </body>
 </html>
